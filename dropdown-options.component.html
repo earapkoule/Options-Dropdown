@@ -1,0 +1,76 @@
+<div class="dropdown-container dropdown-btn">
+  <div *ngFor="let option of options" class="dropdown-item-container" [attr.test-button]="option.testId" (click)="handleOptionClick($event, option)">
+    <!-- Do not try to merge the two spans!!! The empty router-link breaks the functionality! -->
+
+    <span
+      *ngIf="option.goTo"
+      class="dropdown-item"
+      [ngClass]="{
+        'disabled-np': option.disabled,
+        'border-btm': option.borderBottom,
+        'hidden-option': option.hidden
+      }"
+      [routerLink]="option.goTo"
+    >
+      <i *ngFor="let icon of option.icons" class="material-icons">{{ icon }}</i>
+      <span class="dropdown-text">{{ option.name }}</span>
+    </span>
+
+    <span
+      *ngIf="!option.goTo"
+      class="dropdown-item"
+      [ngClass]="{
+        'disabled-np': option.disabled,
+        'border-btm': option.borderBottom,
+        'hidden-option': option.hidden
+      }"
+    >
+      <i *ngFor="let icon of option.icons" class="material-icons">{{ icon }}</i>
+      <span class="dropdown-text">{{ option.name }}</span>
+    </span>
+
+    <div *ngIf="option.options && !option.disabled" class="nested-dropdown-container">
+      <ng-template ngFor let-optionChild [ngForOf]="option.options">
+        <ng-template [ngTemplateOutlet]="nestedDropdownRef" [ngTemplateOutletContext]="{ option: optionChild }"> </ng-template>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<ng-template #nestedDropdownRef let-option="option">
+  <div class="dropdown-item-container" [attr.test-button]="option.testId" (click)="handleOptionClick($event, option)">
+    <!-- Do not try to merge the two spans!!! The empty router-link breaks the functionality! -->
+    <span
+      *ngIf="option.goTo"
+      class="dropdown-item"
+      [ngClass]="{
+        'disabled-np': option.disabled,
+        'border-btm': option.borderBottom,
+        'hidden-option': option.hidden
+      }"
+      [routerLink]="option.goTo"
+    >
+      <i *ngFor="let icon of option.icons" class="material-icons">{{ icon }}</i>
+      <span class="dropdown-text">{{ option.name }}</span>
+    </span>
+
+    <span
+      *ngIf="!option.goTo"
+      class="dropdown-item"
+      [ngClass]="{
+        'disabled-np': option.disabled,
+        'border-btm': option.borderBottom,
+        'hidden-option': option.hidden
+      }"
+    >
+      <i *ngFor="let icon of option.icons" class="material-icons">{{ icon }}</i>
+      <span class="dropdown-text">{{ option.name }}</span>
+    </span>
+
+    <div *ngIf="option.options" class="nested-dropdown-container">
+      <ng-template ngFor let-optionChild [ngForOf]="option.options">
+        <ng-template [ngTemplateOutlet]="nestedDropdownRef" [ngTemplateOutletContext]="{ option: optionChild }"> </ng-template>
+      </ng-template>
+    </div>
+  </div>
+</ng-template>
